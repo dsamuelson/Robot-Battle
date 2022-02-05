@@ -1,3 +1,4 @@
+debugger;
 let randomNumber = function(min, max) {
     let value = Math.floor(Math.random() * (max - min + 1) + min);
 
@@ -9,7 +10,7 @@ let getPlayerName = function () {
     while (name === "" || name === null){
         name = prompt("What is your robot's name?");
     }
-
+    return name;
 };
 
 let playerInfo = {
@@ -56,65 +57,67 @@ let enemyInfo = [
     }
 ];
 
-// fight function
-let fight = function(enemy) {
-
-  
-  while (playerInfo.health > 0 && enemy.health > 0){
+let fightOrSkip = function () {
     let promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
-    
-    if (promptFight === "skip" || promptFight === "SKIP") {
-        // confirm player wants to skip
-        let confirmSkip = window.confirm("Are you sure you'd like to quit?");
 
-        if (confirmSkip && playerInfo.money > 2) {
-        window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
-        // subtract money from playerInfo.money for skipping
-        playerInfo.money = Math.max(0, playerInfo.money - 2);
-        console.log(playerInfo.money);
-        break;
-        }
-        else {
-        fight();
-        }
+    if (promptFight === "" || promptFight === null) {
+        window.alert("You need to provide a valid answer! Please try again.");
+        return fightOrSkip();
     }
+    promptFight = promptFight.toLowerCase();
+    if (promptFight === "skip") {
+        let confirmSkip = window.confirm("Are you sure you'd like to quit?");
+        if (confirmSkip) {
+            window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
+            playerInfo.money = Math.max(0, playerInfo.money - 10);
+            return true;
+        }
+    } else if (promptFight === "fight") {
+        return false;
+    } else {
+        window.alert("You must choose either FIGHT or SKIP!");
+        return fightOrSkip();
+    }
+};
 
-
-    if (promptFight === "fight" || promptFight === "FIGHT") {
-        var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-        enemy.health = Math.max(0, enemy.health - damage);
-        console.log(
-        playerInfo.name + " attacked " + enemy.name + ". " + enemy.name + " now has " + enemy.health + " health remaining."
-        );
-
-        // check enemy's health
-        if (enemy.health <= 0) {
-        window.alert(enemy.name + " has died!");
-
-        playerInfo.money += 20;
-
+// fight function
+let fight = function(enemy) { 
+  while (playerInfo.health > 0 && enemy.health > 0){
+    if (fightOrSkip()) {
         break;
-        
+    } 
+    var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+    enemy.health = Math.max(0, enemy.health - damage);
+    console.log(
+    playerInfo.name + " attacked " + enemy.name + ". " + enemy.name + " now has " + enemy.health + " health remaining."
+    );
+
+    // check enemy's health
+    if (enemy.health <= 0) {
+    window.alert(enemy.name + " has died!");
+
+    playerInfo.money += 20;
+
+    break;
     } else {
         window.alert(enemy.name + " still has " + enemy.health + " health left.");
     }
 
-        var damage = randomNumber(enemy.attack - 3, enemy.attack);
+    var damage = randomNumber(enemy.attack - 3, enemy.attack);
 
-        playerInfo.health = Math.max(0, playerInfo.health - damage);
-        console.log(
-        enemy.name + " attacked " + playerInfo.name + ". " + playerInfo.name + " now has " + playerInfo.health + " health remaining."
-        );
+    playerInfo.health = Math.max(0, playerInfo.health - damage);
+    console.log(
+    enemy.name + " attacked " + playerInfo.name + ". " + playerInfo.name + " now has " + playerInfo.health + " health remaining."
+    );
 
-        // check player's health
-        if (playerInfo.health <= 0) {
-        endGame();
-        break;
-        } else {
-        window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
-        }
-        // if player choses to skip
-    } 
+    // check player's health
+    if (playerInfo.health <= 0) {
+    endGame();
+    break;
+    } else {
+    window.alert(playerInfo.name + " still has " + playerInfo.health + " health left.");
+    }
+
     
   }
 };
