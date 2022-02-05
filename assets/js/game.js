@@ -1,14 +1,19 @@
-
-
-
 let randomNumber = function(min, max) {
     let value = Math.floor(Math.random() * (max - min + 1) + min);
 
     return value;
 };
 
+let getPlayerName = function () {
+    let name = prompt("What is your robot's name?");
+    while (name === "" || name === null){
+        name = prompt("What is your robot's name?");
+    }
+
+};
+
 let playerInfo = {
-    name: window.prompt("What is your robot's name?"),
+    name: getPlayerName(),
     health: 100,
     attack: 10,
     money: 10,
