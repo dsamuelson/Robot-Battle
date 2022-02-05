@@ -23,7 +23,7 @@ let fight = function(enemyName) {
         if (confirmSkip && playerMoney > 2) {
         window.alert(playerName + " has decided to skip this fight. Goodbye!");
         // subtract money from playerMoney for skipping
-        playerMoney = playerMoney - 2;
+        playerMoney = Math.max(0, playerMoney - 2);
         console.log(playerMoney);
         break;
         }
@@ -34,7 +34,7 @@ let fight = function(enemyName) {
 
 
     if (promptFight === "fight" || promptFight === "FIGHT") {
-        enemyHealth = enemyHealth - playerAttack;
+        enemyHealth = Math.max(0, enemyHealth - playerAttack);
         console.log(
         playerName + " attacked " + enemyName + ". " + enemyName + " now has " + enemyHealth + " health remaining."
         );
@@ -51,7 +51,7 @@ let fight = function(enemyName) {
         window.alert(enemyName + " still has " + enemyHealth + " health left.");
     }
 
-        playerHealth = playerHealth - enemyAttack;
+        playerHealth = Math.max(0, playerHealth - enemyAttack);
         console.log(
         enemyName + " attacked " + playerName + ". " + playerName + " now has " + playerHealth + " health remaining."
         );
